@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Home</li>
+        </ol>
+      </nav>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -15,6 +20,13 @@
                     @endif
 
                     You are logged in!
+                </div>
+                <div class="card-body">
+                    <?php
+                    $user = Auth::user();
+                    $RoleNames = $user->role;
+                    ?>
+                    your role:{{$RoleNames}}
                 </div>
             </div>
         </div>
