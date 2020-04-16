@@ -17,8 +17,8 @@ class ApiController extends Controller
         $json = $file_data->file;
         $content = file_get_contents("storage/$json");
         $file = fopen("storage/$json","r");
-        $r_file = fread($file,1000);
+        $r_file = fread($file,100000);
         // return redirect("storage/$json");
-        return response("$r_file");
+        return response("$content");
     }
 }

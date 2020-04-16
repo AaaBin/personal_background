@@ -74,7 +74,6 @@
                        id="delete_btn_{{ $item->id}}"
                        class="btn btn-danger"
                        onclick="delete_file({{ $item->id}})">delete</a>
-
                 </td>
             </tr>
             @endforeach
