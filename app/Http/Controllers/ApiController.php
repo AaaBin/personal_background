@@ -13,6 +13,8 @@ class ApiController extends Controller
     }
     public function show($id)
     {
-        return File::find($id);
+        $file_data = File::find($id);
+        $json = $file_data->file;
+        return redirect("storage/$json");
     }
 }

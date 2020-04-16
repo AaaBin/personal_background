@@ -71,6 +71,9 @@
                        id="delete_btn_{{ $item->id}}"
                        class="btn btn-danger"
                        onclick="delete_file({{ $item->id}})">delete</a>
+                    <a href="api/file/get/{{ $item->id}}"
+                       id="get_json_{{ $item->id}}"
+                       class="btn btn-info">get</a>
                 </td>
             </tr>
             @endforeach
