@@ -40,9 +40,9 @@
                 id="import"
                 class="btn btn-secondary mb-2">Import</button>
         <div class="form-group">
-            <textarea id="result"
+            <input id="result"
                       class="form-control"
-                      name="json"></textarea>
+                      name="json">
             <small class="form-text text-muted">this is the data that will stored</small>
 
         </div>

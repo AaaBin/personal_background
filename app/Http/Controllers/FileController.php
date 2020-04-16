@@ -39,11 +39,10 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request_data = $request->all();
-        dd($request_data);
         $file_data = new File;
         $file_data->title = $request_data['title'];
+        $file_data->json = $request_data['json'];
         $file_data->description = $request_data['description'];
-        $file_data->file = $request_data['file'];
         $file_data->save();
         return redirect('/file');
     }
@@ -56,10 +55,11 @@ class FileController extends Controller
      */
     public function show($id)
     {
-        $file_data = File::find($id);
-        $file = public_path("storage\\$file_data->file");
-        $file_name = $file_data->title . ".json";
-        return response()->download($file, $file_name);
+        // download
+        // $file_data = File::find($id);
+        // $file = public_path("storage\\$file_data->file");
+        // $file_name = $file_data->title . ".json";
+        // return response()->download($file, $file_name);
     }
 
     /**
