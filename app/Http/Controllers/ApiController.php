@@ -15,6 +15,10 @@ class ApiController extends Controller
     {
         $file_data = File::find($id);
         $json = $file_data->file;
-        return redirect("storage/$json");
+        $content = file_get_contents("storage/$json");
+        $file = fopen("storage/$json","r");
+        $r_file = fread($file,1000);
+        // return redirect("storage/$json");
+        return response("$r_file");
     }
 }
