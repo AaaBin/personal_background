@@ -43,8 +43,8 @@ class FileController extends Controller
         $request_data['file'] = $file_path;
         $type = explode('.',$file_path)[1];
         $file_data = new File;
-        $file_data->title = $request_data->title;
-        $file_data->description = $request_data->description;
+        $file_data->title = $request_data['title'];
+        $file_data->description = $request_data['description'];
         $file_data->type = $type;
         $file_data->file = $file_path;
         $file_data->save();
@@ -61,8 +61,9 @@ class FileController extends Controller
     {
         $file_data = File::find($id);
         $file = public_path("storage\\$file_data->file");
-        $header = $file_data->type;
-        return response()->download($file, $file_data->title,$header);
+        $type = $file_data->type;
+        $file_name = $file_data->title . "." . $type;
+        return response()->download($file, $file_name);
     }
 
     /**
