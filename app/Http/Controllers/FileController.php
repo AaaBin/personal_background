@@ -94,8 +94,6 @@ class FileController extends Controller
     public function destroy($id)
     {
         $file_data = File::find($id);
-        $file_path = $file_data->file;
-        Storage::disk('public')->delete("$file_path");
         $file_data->delete();
         return $file_data;
     }
