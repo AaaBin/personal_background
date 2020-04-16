@@ -9,13 +9,13 @@
 
 @section('content')
 <div class="container">
-    <h2>upload file</h2>
+    <h2>upload .json file</h2>
     <form method="POST"
           action="/file"
           enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label for="title">title</label>
+            <label for="title">1. title</label>
             <input type="title"
                    class="form-control"
                    id="title"
@@ -23,21 +23,36 @@
                    name="title"
                    required>
             <small id="titleHelp"
-                   class="form-text text-muted">file title in here.</small>
+                   class="form-text text-muted">.json file title in here.</small>
         </div>
+
+
         <div class="form-group">
-            <label for="file">file</label>
+            <label for="selectFiles">2. file</label>
             <input type="file"
-                   class="form-control"
-                   id="file"
-                   name="file">
+                   id="selectFiles"
+                   value="Import"
+                   class="d-block" />
+            <small class="form-text text-muted">upload a .json file and click import.</small>
+        </div>
+        <label for="import">3. import</label>
+        <button type="button"
+                id="import"
+                class="btn btn-secondary mb-2">Import</button>
+        <div class="form-group">
+            <textarea id="result"
+                      class="form-control"
+                      name="json"></textarea>
+            <small class="form-text text-muted">this is the data that will stored</small>
+
         </div>
         <div class="form-group">
-            <label for="description">description</label>
+            <label for="description">4. description</label>
             <input type="description"
                    class="form-control"
                    id="description"
                    name="description">
+            <small class="form-text text-muted">write the description of this json file</small>
         </div>
         <button type="submit"
                 class="btn btn-primary">Submit</button>
@@ -122,5 +137,26 @@
         }
         })
     }
+</script>
+
+<script>
+    document.getElementById('import').onclick = function() {
+	var files = document.getElementById('selectFiles').files;
+  console.log(files);
+  if (files.length <= 0) {
+    return false;
+  }
+
+  var fr = new FileReader();
+
+  fr.onload = function(e) {
+  console.log(e);
+    var result = JSON.parse(e.target.result);
+    var formatted = JSON.stringify(result, null, 2);
+		document.getElementById('result').value = formatted;
+  }
+
+  fr.readAsText(files.item(0));
+};
 </script>
 @endsection

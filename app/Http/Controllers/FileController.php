@@ -39,14 +39,11 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request_data = $request->all();
-        $file_path = $request->file("file")->store('file', 'public'); //將檔案進行儲存，並抓到路徑
-        $request_data['file'] = $file_path;
-        $type = explode('.',$file_path)[1];
+        dd($request_data);
         $file_data = new File;
         $file_data->title = $request_data['title'];
         $file_data->description = $request_data['description'];
-        $file_data->type = $type;
-        $file_data->file = $file_path;
+        $file_data->file = $request_data['file'];
         $file_data->save();
         return redirect('/file');
     }
@@ -61,8 +58,7 @@ class FileController extends Controller
     {
         $file_data = File::find($id);
         $file = public_path("storage\\$file_data->file");
-        $type = $file_data->type;
-        $file_name = $file_data->title . "." . $type;
+        $file_name = $file_data->title . ".json";
         return response()->download($file, $file_name);
     }
 
