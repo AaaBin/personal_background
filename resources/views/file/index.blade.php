@@ -211,7 +211,7 @@
             let id = val.id;
 
         $.ajax({
-            url: `http://127.0.0.1:8000/api/file/get/${id}`,
+            url: `http://ec2-3-17-155-235.us-east-2.compute.amazonaws.com/api/file/get/${id}`,
             }).done(function (result) {
 
             $(`#json${id}`).text(result);
