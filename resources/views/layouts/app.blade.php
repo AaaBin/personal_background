@@ -8,12 +8,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Aaabin') }}</title>
-    <link rel="icon" href="">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="icon" href="https://aaabin-create-at-20200419.s3-ap-northeast-1.amazonaws.com/%E5%80%8B%E4%BA%BA%E7%B6%B2%E7%AB%99/04-img/icon.svg">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('css')
