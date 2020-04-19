@@ -86,7 +86,17 @@ class FileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request_data = $request->all();
+        $file_data = File::find($request_data['id']);
+        $file_path = "storage/".$file_data->file;
+        file_put_contents($file_path,$request_data["json"]);
+        // dd(file_get_contents($file_path));
+        $file_data->title = $request_data['title'];
+        $file_data->description = $request_data['description'];
+        $file_data->save();
+
+        return redirect('/file');
+
     }
 
     /**
