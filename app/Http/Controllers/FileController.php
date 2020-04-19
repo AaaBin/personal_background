@@ -60,7 +60,7 @@ class FileController extends Controller
     public function show($id)
     {
         $file_data = File::find($id);
-        $file = public_path("storage\\$file_data->file");
+        $file = public_path("storage/$file_data->file");
         $type = $file_data->type;
         $file_name = $file_data->title . "." . $type;
         return response()->download($file, $file_name);
