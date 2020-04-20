@@ -121,7 +121,7 @@
                 <td>
                     <a href="file/{{$item->id}}"
                        class="btn btn-primary">download</a>
-                    <a href="api/file/get/{{ $item->id}}"
+                    <a href="{{ $item->file_url }}"
                        id="get_json_{{ $item->id}}"
                        class="btn btn-info">read</a>
                     <a class="btn btn-warning edit_btn"

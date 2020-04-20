@@ -16,7 +16,7 @@ class CreateFiles extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('file');
+            $table->string('file_url');
             $table->string('description');
             $table->string('type');
             $table->timestamps();

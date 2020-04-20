@@ -39,15 +39,18 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request_data = $request->all();
-        $file_path = $request->file("file")->store('file', 'public'); //將檔案進行儲存，並抓到路徑
+        $file_path = $request->file("file")->store('personal_backend', 's3'); //將檔案進行儲存，並抓到路徑
         $request_data['file'] = $file_path;
-        $type = explode('.',$file_path)[1];
+        $type = explode('.', $file_path)[1];
+        $file_url = Storage::disk('s3')->url($file_path);
+
         $file_data = new File;
         $file_data->title = $request_data['title'];
         $file_data->description = $request_data['description'];
         $file_data->type = $type;
-        $file_data->file = $file_path;
+        $file_data->file_url = $file_url;
         $file_data->save();
+
         return redirect('/file');
     }
 
@@ -60,10 +63,8 @@ class FileController extends Controller
     public function show($id)
     {
         $file_data = File::find($id);
-        $file = public_path("storage/$file_data->file");
-        $type = $file_data->type;
-        $file_name = $file_data->title . "." . $type;
-        return response()->download($file, $file_name);
+        $contents = Storage::disk('s3')->exists("$file_data->file_url");
+        dd($contents);
     }
 
     /**
@@ -88,8 +89,8 @@ class FileController extends Controller
     {
         $request_data = $request->all();
         $file_data = File::find($request_data['id']);
-        $file_path = "storage/".$file_data->file;
-        file_put_contents($file_path,$request_data["json"]);
+        $file_path = "storage/" . $file_data->file;
+        file_put_contents($file_path, $request_data["json"]);
         // dd(file_get_contents($file_path));
         $file_data->title = $request_data['title'];
         $file_data->description = $request_data['description'];
