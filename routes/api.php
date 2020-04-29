@@ -18,6 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/file/get/all','ApiController@index');
 Route::get('/file/get/{id}','ApiController@show');
 

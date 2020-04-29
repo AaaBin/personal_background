@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ApiController extends Controller
 {
@@ -14,11 +15,9 @@ class ApiController extends Controller
     public function show($id)
     {
         $file_data = File::find($id);
-        $json = $file_data->file;
-        $content = file_get_contents("storage/$json");
-        // $file = fopen("storage/$json","r");
-        // $r_file = fread($file,100000);
-        // return redirect("storage/$json");
+        $file_name = $file_data->file_name;
+        $content = Storage::disk('s3')->get("personal_backend/$file_name");
+
         return response("$content");
     }
 }

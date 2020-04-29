@@ -16,7 +16,6 @@ class FileController extends Controller
     public function index()
     {
         $file_data = File::all();
-
         return view('file/index', compact('file_data'));
     }
 
@@ -39,15 +38,20 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request_data = $request->all();
-        $file_path = $request->file("file")->store('personal_backend', 's3'); //將檔案進行儲存，並抓到路徑
-        $request_data['file'] = $file_path;
-        $type = explode('.', $file_path)[1];
-        $file_url = Storage::disk('s3')->url($file_path);
+        // 將上傳檔案儲存成變數
+        $file = $request->file('file');
+        // 存進s3
+        $path = Storage::disk("s3")->put('personal_backend', $file);
+        // 取得檔案名稱
+        $file_name = explode('/',$path)[1];
+        // 取得檔案網址
+        $file_url = Storage::disk('s3')->url($path);
 
+        // 建立新資料
         $file_data = new File;
         $file_data->title = $request_data['title'];
+        $file_data->file_name = $file_name;
         $file_data->description = $request_data['description'];
-        $file_data->type = $type;
         $file_data->file_url = $file_url;
         $file_data->save();
 
@@ -62,9 +66,19 @@ class FileController extends Controller
      */
     public function show($id)
     {
+        // 檔案下載
+        // 將要下載的檔案資料存成變數
         $file_data = File::find($id);
-        $contents = Storage::disk('s3')->exists("$file_data->file_url");
-        dd($contents);
+        // 抓出儲存時的檔案名稱
+        $file_name = $file_data->file_name;
+        // 判斷是否存在這一檔案
+        $exists = Storage::disk('s3')->exists("personal_backend/$file_name");
+        if ($exists == true) {
+            // 下載檔案
+            return Storage::disk("s3")->download("personal_backend/$file_name",$file_name);
+        }
+        // 若找不到檔案，導回file/index頁並夾帶錯誤訊息通知
+        return redirect('/file')->with("error","this file is not exist");
     }
 
     /**
@@ -89,11 +103,17 @@ class FileController extends Controller
     {
         $request_data = $request->all();
         $file_data = File::find($request_data['id']);
-        $file_path = "storage/" . $file_data->file;
-        file_put_contents($file_path, $request_data["json"]);
-        // dd(file_get_contents($file_path));
-        $file_data->title = $request_data['title'];
-        $file_data->description = $request_data['description'];
+        $file_name = $file_data->file_name;
+        $file_content = $request_data["json"];
+        $file_url = $file_data->file_url;
+
+        // error 不能透過HTTP寫入檔案
+        // 用FTP?
+        $file = fopen("$file_url","r+");
+        fwrite($file,$file_content);
+
+        dd(file_get_contents($file_url));
+
         $file_data->save();
 
         return redirect('/file');
